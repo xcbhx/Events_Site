@@ -21,6 +21,9 @@
 <form method="POST">
     <fieldset>
         <legend>RSVP</legend>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
         <p>
             <label>
                 Your Name:
