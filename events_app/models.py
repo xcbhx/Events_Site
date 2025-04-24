@@ -1,8 +1,9 @@
 """Create database models to represent tables."""
-from events_app import db
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
 from sqlalchemy import Enum
-import enum
+from events_app import db  # Import db from __init__.py
+
 
 # Many-to-Many Association Table
 guest_event_table = db.Table(
@@ -11,10 +12,10 @@ guest_event_table = db.Table(
     db.Column('guest_id', db.Integer, db.ForeignKey('guest.id'), primary_key=True)
 )
 
-class EventType(enum.Enum):
-    Party = 'Party'
-    Study = 'Study'
-    Networking = 'Networking'
+# class EventType(enum.Enum):
+#     Party = 'Party'
+#     Study = 'Study'
+#     Networking = 'Networking'
 
 class Guest(db.Model):
     __tablename__ = 'guest'
@@ -30,6 +31,5 @@ class Event(db.Model):
     title = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(100), nullable=False)
     date_and_time = db.Column(db.DateTime)
-    event_type = db.Column(Enum(EventType))
+    # event_type = db.Column(Enum(EventType))
     guests = db.relationship('Guest', secondary=guest_event_table, back_populates='events_attending')
-
