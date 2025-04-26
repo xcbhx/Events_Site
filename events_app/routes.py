@@ -17,8 +17,6 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     """Show upcoming events to users!"""
-
-    # TODO: Get all events and send to the template
     all_events = Event.query.all()
     return render_template('index.html', all_events=all_events)
 
@@ -40,8 +38,6 @@ def create():
             return render_template('create.html', 
                 error='Incorrect datetime format! Please try again.')
 
-        # TODO: Create a new event with the given title, description, & 
-        # datetime, then add and commit to the database
         new_event = Event(
             title=new_event_title,
             description=new_event_description,
@@ -60,7 +56,6 @@ def create():
 def event_detail(event_id):
     """Show a single event."""
 
-    # TODO: Get the event with the given id and send to the template
     event = Event.query.get(event_id)
     return render_template('event_detail.html', event=event)
 
@@ -68,19 +63,14 @@ def event_detail(event_id):
 @main.route('/event/<event_id>', methods=['POST'])
 def rsvp(event_id):
     """RSVP to an event."""
-    # TODO: Get the event with the given id from the database
+
     event = Event.query.get(event_id)
     is_returning_guest = request.form.get('returning')
     guest_name = request.form.get('guest_name')
 
     if is_returning_guest:
-        # TODO: Look up the guest by name. If the guest doesn't exist in the 
-        # database, render the event_detail.html template, and pass in an error
-        # message as `error`.
         guest = Guest.query.filter_by(name=guest_name).first()
 
-        # TODO: If the guest does exist, add the event to their 
-        # events_attending, then commit to the database.
         if not guest:
             return render_template('event_detail.html', event=event,
                                    error="Guest not found. Please try again or RSVP as a new guest.")
@@ -88,8 +78,6 @@ def rsvp(event_id):
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
 
-        # TODO: Create a new guest with the given name, email, and phone, and 
-        # add the event to their events_attending, then commit to the database.
         guest = Guest(name=guest_name, email=guest_email, phone=guest_phone)
         db.session.add(guest)
 

@@ -2,7 +2,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
 from sqlalchemy import Enum
-from events_app import db  # Import db from __init__.py
+from events_app import db  
 
 
 # Many-to-Many Association Table
